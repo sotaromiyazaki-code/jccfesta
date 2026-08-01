@@ -12,3 +12,8 @@ body {
     'Noto Sans JP', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
+
+/* iOS Safari の自動ズーム防止（font-size < 16px でズームが発生するため） */
+input, textarea, select {
+  font-size: 16px;
+}
