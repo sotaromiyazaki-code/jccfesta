@@ -129,7 +129,7 @@ export default function QuestionsPage() {
                   </div>
                   <p className="text-sm text-gray-800 leading-relaxed line-clamp-3">{q.content}</p>
                   {qComments.length > 0 && (
-                    <p className="text-xs text-gray-400 mt-2">💬 {qComments.length}件のコメント</p>
+                    <p className="text-xs text-gray-400 mt-2">💬 {qComments.length}件の回答</p>
                   )}
                 </Link>
               )

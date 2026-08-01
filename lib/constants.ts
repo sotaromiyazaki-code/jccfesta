@@ -7,6 +7,7 @@ export const TEAMS = [
   'コンテンツ2',
   'コンテンツ3',
   'インターン',
+  'コアメン',
   'その他',
 ] as const
 
@@ -33,5 +34,6 @@ export const TEAM_COLORS: Record<string, string> = {
   コンテンツ2: 'bg-orange-100 text-orange-700',
   コンテンツ3: 'bg-red-100 text-red-700',
   インターン: 'bg-teal-100 text-teal-700',
+  コアメン: 'bg-pink-100 text-pink-700',
   その他: 'bg-gray-100 text-gray-600',
 }

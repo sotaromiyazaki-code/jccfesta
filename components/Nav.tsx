@@ -5,10 +5,10 @@ import { usePathname } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 
 const tabs = [
-  { href: '/board',     label: '📋 依頼',  activeColor: 'border-blue-600 text-blue-600'   },
-  { href: '/meetings',  label: '📅 会議',  activeColor: 'border-blue-600 text-blue-600'   },
-  { href: '/thanks',    label: '✨ Thanks', activeColor: 'border-yellow-500 text-yellow-600' },
-  { href: '/questions', label: '❓ 質問箱', activeColor: 'border-purple-600 text-purple-600' },
+  { href: '/board',     label: '📋 依頼',     activeColor: 'border-blue-600 text-blue-600'    },
+  { href: '/meetings',  label: '📅 会議',     activeColor: 'border-blue-600 text-blue-600'    },
+  { href: '/questions', label: '❓ 質問箱',   activeColor: 'border-purple-600 text-purple-600' },
+  { href: '/thanks',    label: '✨ Thanks',   activeColor: 'border-yellow-500 text-yellow-600' },
   { href: '/mypage',    label: '👤 マイページ', activeColor: 'border-purple-600 text-purple-600' },
 ]
 

@@ -17,6 +17,7 @@ export default function QuestionDetailPage() {
   const [question, setQuestion] = useState<Question | null>(null)
   const [comments, setComments] = useState<QuestionComment[]>([])
   const [newComment, setNewComment] = useState('')
+  const [answersOpen, setAnswersOpen] = useState(false)
   const [loading, setLoading] = useState(true)
   const [commenting, setCommenting] = useState(false)
   const [statusUpdating, setStatusUpdating] = useState(false)
@@ -177,49 +178,66 @@ export default function QuestionDetailPage() {
           {statusUpdating ? '更新中...' : question.status === 'unanswered' ? '✓ 回答済みにする' : '↩ 未回答に戻す'}
         </button>
 
-        {/* コメント */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-4">
-          <p className="text-xs font-medium text-gray-500 mb-3">
-            コメント {comments.length > 0 && `(${comments.length})`}
-          </p>
+        {/* 回答欄（折りたたみ式） */}
+        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+          {/* トグルボタン */}
+          <button
+            type="button"
+            onClick={() => setAnswersOpen((v) => !v)}
+            className="w-full px-4 py-3 flex items-center justify-between text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+          >
+            <span>
+              💬 回答
+              {comments.length > 0 && (
+                <span className="ml-1.5 text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-medium">
+                  {comments.length}件
+                </span>
+              )}
+            </span>
+            <span className={`text-gray-400 text-xs transition-transform ${answersOpen ? 'rotate-180' : ''}`}>▼</span>
+          </button>
 
-          {comments.length === 0 && (
-            <p className="text-sm text-gray-400 mb-4">まだコメントはありません</p>
-          )}
+          {answersOpen && (
+            <div className="border-t border-gray-100 p-4">
+              {comments.length === 0 && (
+                <p className="text-sm text-gray-400 mb-4">まだ回答はありません</p>
+              )}
 
-          <div className="space-y-3 mb-4">
-            {comments.map((c) => (
-              <div key={c.id} className="flex gap-2">
-                <div className="shrink-0 w-7 h-7 bg-purple-100 rounded-full flex items-center justify-center text-xs font-bold text-purple-600">
-                  {c.created_by[0]}
-                </div>
-                <div className="flex-1 bg-gray-50 rounded-xl px-3 py-2">
-                  <div className="flex items-center gap-2 mb-0.5">
-                    <span className="text-xs font-semibold text-gray-700">{c.created_by}</span>
-                    <span className="text-xs text-gray-400">{formatDate(c.created_at)}</span>
+              <div className="space-y-3 mb-4">
+                {comments.map((c) => (
+                  <div key={c.id} className="flex gap-2">
+                    <div className="shrink-0 w-7 h-7 bg-purple-100 rounded-full flex items-center justify-center text-xs font-bold text-purple-600">
+                      {c.created_by[0]}
+                    </div>
+                    <div className="flex-1 bg-gray-50 rounded-xl px-3 py-2">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <span className="text-xs font-semibold text-gray-700">{c.created_by}</span>
+                        <span className="text-xs text-gray-400">{formatDate(c.created_at)}</span>
+                      </div>
+                      <p className="text-sm text-gray-700 whitespace-pre-wrap">{c.content}</p>
+                    </div>
                   </div>
-                  <p className="text-sm text-gray-700 whitespace-pre-wrap">{c.content}</p>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
 
-          <form onSubmit={submitComment} className="flex gap-2">
-            <input
-              type="text"
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              placeholder="コメントを入力..."
-              className="flex-1 border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-            <button
-              type="submit"
-              disabled={commenting || !newComment.trim()}
-              className="bg-purple-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-purple-700 disabled:opacity-40 transition-colors"
-            >
-              送信
-            </button>
-          </form>
+              <form onSubmit={submitComment} className="flex gap-2">
+                <input
+                  type="text"
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  placeholder="回答を入力..."
+                  className="flex-1 border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+                <button
+                  type="submit"
+                  disabled={commenting || !newComment.trim()}
+                  className="bg-purple-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-purple-700 disabled:opacity-40 transition-colors"
+                >
+                  送信
+                </button>
+              </form>
+            </div>
+          )}
         </div>
       </main>
     </div>
