@@ -17,6 +17,7 @@
     --blue:#7fd0e8;
     --green:#9fdcae;
     --purple:#cbb2ea;
+    --orange:#ffb37f;
     --tape:#fff6c2;
     --shadow: 0 10px 18px rgba(58,46,34,0.28);
   }
@@ -35,183 +36,69 @@
   }
   .wrap{max-width:760px;margin:0 auto;}
 
-  /* ---- Header ---- */
-  header{
-    text-align:center;
-    margin-bottom:34px;
-    position:relative;
-  }
+  header{text-align:center;margin-bottom:34px;position:relative;}
   .pin{
     width:16px;height:16px;border-radius:50%;
     background:radial-gradient(circle at 30% 30%, #ff6b6b, #c62828);
     box-shadow:0 3px 4px rgba(0,0,0,0.35);
-    position:absolute;
-    left:50%;
-    top:-8px;
-    transform:translateX(-50%);
-    z-index:5;
+    position:absolute;left:50%;top:-8px;transform:translateX(-50%);z-index:5;
   }
   .board-title{
-    display:inline-block;
-    background:var(--paper);
-    padding:22px 30px 18px;
-    border-radius:6px;
-    box-shadow:var(--shadow);
-    transform:rotate(-1.2deg);
-    position:relative;
+    display:inline-block;background:var(--paper);padding:22px 30px 18px;
+    border-radius:6px;box-shadow:var(--shadow);transform:rotate(-1.2deg);position:relative;
   }
-  .board-title h1{
-    font-family:'Yomogi', cursive;
-    font-size:2.5rem;
-    margin:0 0 6px;
-    color:#c0392b;
-    letter-spacing:1px;
-  }
-  .board-title p{
-    margin:0;
-    font-weight:700;
-    font-size:0.95rem;
-    color:#6b5843;
-  }
+  .board-title h1{font-family:'Yomogi', cursive;font-size:2.5rem;margin:0 0 6px;color:#c0392b;letter-spacing:1px;}
+  .board-title p{margin:0;font-weight:700;font-size:0.95rem;color:#6b5843;}
 
-  /* ---- Section card (sticky note) ---- */
-  .note{
-    background:var(--paper);
-    border-radius:8px;
-    padding:24px 22px 22px;
-    box-shadow:var(--shadow);
-    margin-bottom:30px;
-    position:relative;
-  }
+  .note{background:var(--paper);border-radius:8px;padding:24px 22px 22px;box-shadow:var(--shadow);margin-bottom:30px;position:relative;}
   .note.rot-l{transform:rotate(-0.8deg);}
   .note.rot-r{transform:rotate(0.9deg);}
 
-  .washi{
-    position:absolute;
-    top:-14px;
-    height:30px;
-    width:90px;
-    opacity:0.9;
-    border-radius:2px;
-  }
+  .washi{position:absolute;top:-14px;height:30px;width:90px;opacity:0.9;border-radius:2px;}
   .washi.left{left:22px;transform:rotate(-6deg);}
   .washi.right{right:26px;transform:rotate(5deg);}
 
   .tag{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    font-family:'Yomogi', cursive;
-    font-size:1.5rem;
-    font-weight:400;
-    padding:2px 14px 4px;
-    border-radius:999px;
-    margin-bottom:14px;
+    display:inline-flex;align-items:center;gap:6px;font-family:'Yomogi', cursive;font-size:1.5rem;
+    font-weight:400;padding:2px 14px 4px;border-radius:999px;margin-bottom:14px;
   }
   .tag.yellow{background:var(--yellow);}
   .tag.pink{background:var(--pink);}
   .tag.blue{background:var(--blue);}
   .tag.green{background:var(--green);}
   .tag.purple{background:var(--purple);}
+  .tag.orange{background:var(--orange);}
 
-  .note h2{
-    font-family:'Zen Maru Gothic', sans-serif;
-    font-weight:900;
-    font-size:1.3rem;
-    margin:0 0 12px;
-    color:var(--ink);
-  }
-  .note p.lead{
-    margin:0 0 16px;
-    font-size:0.95rem;
-    line-height:1.7;
-    color:#4a3c2c;
-  }
+  .note h2{font-family:'Zen Maru Gothic', sans-serif;font-weight:900;font-size:1.3rem;margin:0 0 12px;color:var(--ink);}
+  .note p.lead{margin:0 0 16px;font-size:0.95rem;line-height:1.7;color:#4a3c2c;}
 
-  .steps{
-    list-style:none;
-    margin:0 0 18px;
-    padding:0;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-  .steps li{
-    display:flex;
-    gap:10px;
-    align-items:flex-start;
-    font-size:0.92rem;
-    line-height:1.6;
-  }
+  .steps{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-direction:column;gap:10px;}
+  .steps li{display:flex;gap:10px;align-items:flex-start;font-size:0.92rem;line-height:1.6;}
   .steps li .num{
-    flex:none;
-    width:26px;height:26px;
-    border-radius:50%;
-    background:var(--ink);
-    color:var(--paper);
-    font-family:'Zen Maru Gothic';
-    font-weight:700;
-    font-size:0.8rem;
-    display:flex;align-items:center;justify-content:center;
-    margin-top:1px;
+    flex:none;width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--paper);
+    font-family:'Zen Maru Gothic';font-weight:700;font-size:0.8rem;display:flex;align-items:center;justify-content:center;margin-top:1px;
   }
 
-  .highlight{
-    background:linear-gradient(90deg, transparent, rgba(255,223,107,0.55), rgba(255,223,107,0.55), transparent);
-    padding:2px 4px;
-    border-radius:3px;
-  }
+  .highlight{background:linear-gradient(90deg, transparent, rgba(255,223,107,0.55), rgba(255,223,107,0.55), transparent);padding:2px 4px;border-radius:3px;}
 
-  .kodawari{
-    border:2.5px dashed #c0392b;
-    border-radius:10px;
-    padding:12px 14px;
-    margin-top:6px;
-    background:rgba(255,255,255,0.55);
-  }
-  .kodawari .kt{
-    font-family:'Yomogi', cursive;
-    color:#c0392b;
-    font-size:1.05rem;
-    font-weight:700;
-    display:block;
-    margin-bottom:4px;
-  }
-  .kodawari p{
-    margin:0;
-    font-size:0.88rem;
-    line-height:1.6;
-    color:#4a3c2c;
-  }
+  .kodawari{border:2.5px dashed #c0392b;border-radius:10px;padding:12px 14px;margin-top:6px;background:rgba(255,255,255,0.55);}
+  .kodawari .kt{font-family:'Yomogi', cursive;color:#c0392b;font-size:1.05rem;font-weight:700;display:block;margin-bottom:4px;}
+  .kodawari p{margin:0;font-size:0.88rem;line-height:1.6;color:#4a3c2c;}
 
-  .team-chip{
-    display:inline-block;
-    font-size:0.78rem;
-    font-weight:700;
-    padding:3px 10px;
-    border-radius:999px;
-    margin:2px 4px 2px 0;
-  }
+  .team-chip{display:inline-block;font-size:0.78rem;font-weight:700;padding:3px 10px;border-radius:999px;margin:2px 4px 2px 0;}
   .c1{background:#d0e8ff;} .c2{background:#ffe0d0;} .c3{background:#e0ffe4;}
   .c4{background:#ffe8f0;} .c5{background:#f0e0ff;} .c6{background:#fff3d0;}
-  .c7{background:#d0fff0;} .c8{background:#f0d0d0;}
+  .c7{background:#d0fff0;} .c8{background:#f0d0d0;} .c9{background:#e8e0ff;}
 
-  footer{
-    text-align:center;
-    margin-top:50px;
+  .note-badge{
+    display:inline-block;font-size:0.72rem;font-weight:700;color:#fff;background:#c0392b;
+    padding:2px 10px;border-radius:999px;margin-bottom:10px;
   }
+
+  footer{text-align:center;margin-top:50px;}
   footer .board-title{transform:rotate(0.7deg);}
-  footer h3{
-    font-family:'Yomogi', cursive;
-    font-size:1.4rem;
-    margin:0;
-    color:#c0392b;
-  }
-  footer p{
-    margin:6px 0 0;
-    font-size:0.85rem;
-    color:#6b5843;
-  }
+  footer h3{font-family:'Yomogi', cursive;font-size:1.4rem;margin:0;color:#c0392b;}
+  footer p{margin:6px 0 0;font-size:0.85rem;color:#6b5843;}
 
   @media (max-width:480px){
     .board-title h1{font-size:2rem;}
@@ -241,9 +128,13 @@
       <li><span class="num">2</span>名前を入力</li>
       <li><span class="num">3</span>自分の所属チームを選ぶ（複数所属もOK）</li>
     </ul>
+    <p class="lead" style="margin-bottom:8px;">所属チームはこの9つ：</p>
+    <div style="margin-bottom:4px;">
+      <span class="team-chip c1">全体</span><span class="team-chip c2">総務</span><span class="team-chip c3">制作</span><span class="team-chip c4">司会</span><span class="team-chip c5">コンテンツ1</span><span class="team-chip c6">コンテンツ2</span><span class="team-chip c7">コンテンツ3</span><span class="team-chip c8">インターン</span><span class="team-chip c9">コアメン</span>
+    </div>
     <div class="kodawari">
       <span class="kt">こだわりポイント</span>
-      <p>所属チームを最初に登録しておくことで、あとで出てくる「マイページ」に自分宛の依頼・会議だけが自動で集まるようになってるよ。</p>
+      <p>所属チームを最初に登録しておくことで、あとで出てくる「マイページ」に自分宛の依頼・会議・質問だけが自動で集まるようになってるよ。</p>
     </div>
   </section>
 
@@ -259,10 +150,6 @@
       <li><span class="num">3</span>絵文字リアクションやコメントでやりとり</li>
       <li><span class="num">4</span>終わったら誰でも「完了にする」を押せる</li>
     </ul>
-    <p class="lead" style="margin-bottom:8px;">送信先チームはこの8つ＋個人指定：</p>
-    <div style="margin-bottom:16px;">
-      <span class="team-chip c1">全体</span><span class="team-chip c2">総務</span><span class="team-chip c3">制作</span><span class="team-chip c4">司会</span><span class="team-chip c5">コンテンツ1</span><span class="team-chip c6">コンテンツ2</span><span class="team-chip c7">コンテンツ3</span><span class="team-chip c8">インターン</span>
-    </div>
     <div class="kodawari">
       <span class="kt">こだわりポイント</span>
       <p>間違って作った依頼は編集・削除もできる。押し間違いを気にせず気軽に投稿してOK！</p>
@@ -303,9 +190,28 @@
     </div>
   </section>
 
-  <!-- thanksページ -->
+  <!-- 質問箱 -->
   <section class="note rot-l">
-    <div class="washi left" style="background:var(--yellow); opacity:0.8;"></div>
+    <div class="washi left" style="background:var(--orange); opacity:0.8;"></div>
+    <span class="note-badge">NEW</span>
+    <span class="tag orange">❓ 質問箱</span>
+    <h2>ちょっとした疑問も、なくならず残る</h2>
+    <p class="lead">気になったことを、部署＋名前を添えて聞ける場所。基本の宛先は<span class="highlight">インターン</span>だけど、必要なら他のチーム・個人にも聞ける。</p>
+    <ul class="steps">
+      <li><span class="num">1</span>自分の所属チームを選び、質問内容を入力</li>
+      <li><span class="num">2</span>他の人にも聞きたいときはトグルをONにして宛先を追加</li>
+      <li><span class="num">3</span>誰でも回答でき、「回答済み」にするとFAQタブに移動</li>
+      <li><span class="num">4</span>回答欄はデフォルトで閉じているので、ボタンを押して展開して読む</li>
+    </ul>
+    <div class="kodawari">
+      <span class="kt">こだわりポイント</span>
+      <p>回答済みの質問はFAQタブにまとまるから、「前に誰か同じこと聞いてなかったっけ？」を見返せる。同じ質問を何度も繰り返さずに済むよ。</p>
+    </div>
+  </section>
+
+  <!-- thanksページ -->
+  <section class="note rot-r">
+    <div class="washi right" style="background:var(--yellow); opacity:0.8;"></div>
     <span class="tag yellow">✨ thanksページ</span>
     <h2>ちょっとの頑張りも、ちゃんと届く場所</h2>
     <p class="lead">「ありがとう」を言いたくなったら、いつでも自由に送れるページ。個人宛でもチーム宛でもOK。</p>
@@ -321,15 +227,16 @@
   </section>
 
   <!-- マイページ -->
-  <section class="note rot-r">
-    <div class="washi right" style="background:var(--purple); opacity:0.7;"></div>
+  <section class="note rot-l">
+    <div class="washi left" style="background:var(--purple); opacity:0.7;"></div>
     <span class="tag purple">🔔 マイページ</span>
     <h2>自分に関係あるものだけ、ここに集まる</h2>
-    <p class="lead">所属チーム宛・全体宛・自分の名前宛の依頼と会議だけが、自動で一覧になる。「掲示板全部を毎回チェックする」から卒業。</p>
+    <p class="lead">所属チーム宛・全体宛・自分の名前宛の依頼・会議・質問だけが、自動で一覧になる。「掲示板全部を毎回チェックする」から卒業。</p>
     <ul class="steps">
       <li><span class="num">1</span>依頼：完了になったら自動でリストから消える</li>
       <li><span class="num">2</span>依頼にだけある✓ボタンで「自分は確認済み」にできる（他の人には影響しない個人用チェック）</li>
       <li><span class="num">3</span>会議：終了時刻が過ぎたら自動でリストから消える</li>
+      <li><span class="num">4</span>質問：回答済みになったら自動でリストから消える</li>
     </ul>
     <div class="kodawari">
       <span class="kt">こだわりポイント</span>
