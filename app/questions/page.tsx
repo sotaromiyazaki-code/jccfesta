@@ -19,6 +19,16 @@ export default function QuestionsPage() {
   const [questions, setQuestions] = useState<Question[]>([])
   const [comments, setComments] = useState<QuestionComment[]>([])
   const [loading, setLoading] = useState(true)
+  const [openFaqIds, setOpenFaqIds] = useState<Set<string>>(new Set())
+
+  const toggleFaq = (id: string) => {
+    setOpenFaqIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
 
   useEffect(() => {
     if (isLoaded && !isAuthenticated) router.replace('/login')
@@ -167,9 +177,25 @@ export default function QuestionsPage() {
                     </p>
                   </div>
 
-                  {/* コメント（回答）一覧 */}
-                  {qComments.length > 0 && (
-                    <div className="border-t border-gray-100 px-4 py-3 space-y-2.5 bg-gray-50/50">
+                  {/* 回答トグル */}
+                  <button
+                    type="button"
+                    onClick={() => toggleFaq(q.id)}
+                    className="w-full border-t border-gray-100 px-4 py-2.5 flex items-center justify-between text-xs text-gray-500 hover:bg-gray-50 transition-colors"
+                  >
+                    <span>
+                      💬 回答
+                      {qComments.length > 0 && (
+                        <span className="ml-1.5 bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full font-medium">
+                          {qComments.length}件
+                        </span>
+                      )}
+                    </span>
+                    <span className={`text-gray-400 transition-transform ${openFaqIds.has(q.id) ? 'rotate-180' : ''}`}>▼</span>
+                  </button>
+
+                  {openFaqIds.has(q.id) && qComments.length > 0 && (
+                    <div className="px-4 pb-3 space-y-2.5 bg-gray-50/50">
                       {qComments.map((c) => (
                         <div key={c.id} className="flex gap-2">
                           <div className="shrink-0 w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center text-xs font-bold text-purple-600">
@@ -187,9 +213,9 @@ export default function QuestionsPage() {
                     </div>
                   )}
 
-                  <div className="px-4 py-2 text-right">
+                  <div className="px-4 py-2 text-right border-t border-gray-50">
                     <Link href={`/questions/${q.id}`} className="text-xs text-gray-400 hover:text-purple-600">
-                      詳細・コメントを見る →
+                      詳細・回答を見る →
                     </Link>
                   </div>
                 </div>

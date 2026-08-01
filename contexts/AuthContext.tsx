@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { supabase } from '@/lib/supabase'
 
 interface AuthContextType {
   userName: string | null
@@ -27,10 +28,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (storedAuth === 'true' && storedName) {
       setIsAuthenticated(true)
       setUserName(storedName)
-      setUserTeamsState(storedTeams ? JSON.parse(storedTeams) : [])
+      const teams = storedTeams ? JSON.parse(storedTeams) : []
+      setUserTeamsState(teams)
+      recordLogin(storedName, teams)
     }
     setIsLoaded(true)
   }, [])
+
+  const recordLogin = (name: string, teams: string[]) => {
+    supabase.from('user_logins').upsert(
+      { user_name: name, teams, last_login_at: new Date().toISOString() },
+      { onConflict: 'user_name', ignoreDuplicates: false }
+    ).then(() => {})
+  }
 
   const login = (passphrase: string, name: string, teams: string[]): boolean => {
     const correctPassphrase = process.env.NEXT_PUBLIC_PASSPHRASE
@@ -41,6 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsAuthenticated(true)
       setUserName(name.trim())
       setUserTeamsState(teams)
+      recordLogin(name.trim(), teams)
       return true
     }
     return false
@@ -49,6 +60,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const updateTeams = (teams: string[]) => {
     localStorage.setItem('jcc_user_teams', JSON.stringify(teams))
     setUserTeamsState(teams)
+    if (userName) {
+      supabase.from('user_logins').update({ teams }).eq('user_name', userName).then(() => {})
+    }
   }
 
   const logout = () => {

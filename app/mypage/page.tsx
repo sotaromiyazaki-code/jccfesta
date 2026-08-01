@@ -22,6 +22,12 @@ export default function MyPage() {
   const [questions, setQuestions] = useState<Question[]>([])
   const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set())
   const [loading, setLoading] = useState(true)
+  const [participants, setParticipants] = useState<{
+    user_name: string
+    teams: string[]
+    first_login_at: string
+    last_login_at: string
+  }[]>([])
 
   // チーム編集
   const [editingTeams, setEditingTeams] = useState(false)
@@ -43,7 +49,8 @@ export default function MyPage() {
     const now = new Date()
     const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString()
 
-    const [reqRes, mtgRes, qRes, dismissRes] = await Promise.all([
+    const isAdmin = userName === 'そうたろう'
+    const [reqRes, mtgRes, qRes, dismissRes, participantRes] = await Promise.all([
       supabase
         .from('requests')
         .select('*, request_recipients(*)')
@@ -63,6 +70,9 @@ export default function MyPage() {
         .from('my_page_dismissals')
         .select('item_id')
         .eq('user_name', userName!),
+      isAdmin
+        ? supabase.from('user_logins').select('*').order('first_login_at')
+        : Promise.resolve({ data: null }),
     ])
 
     const dismissed = new Set((dismissRes.data ?? []).map((d) => d.item_id as string))
@@ -102,6 +112,8 @@ export default function MyPage() {
         )
       )
     }
+
+    if (participantRes.data) setParticipants(participantRes.data)
 
     setLoading(false)
   }, [isMyRecipient, userName])
@@ -379,7 +391,7 @@ export default function MyPage() {
             </section>
 
             {/* 自分宛の質問 */}
-            <section>
+            <section className="mb-6">
               <p className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
                 ❓ 自分宛の質問
                 {questions.length > 0 && (
@@ -424,6 +436,52 @@ export default function MyPage() {
                 </div>
               )}
             </section>
+
+            {/* 参加者一覧（そうたろうのみ表示） */}
+            {userName === 'そうたろう' && (
+              <section>
+                <p className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
+                  👥 参加者一覧
+                  <span className="ml-2 bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full normal-case">
+                    {participants.length}人
+                  </span>
+                </p>
+                <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                  <table className="w-full text-xs">
+                    <thead>
+                      <tr className="border-b border-gray-100 bg-gray-50">
+                        <th className="px-4 py-2.5 text-left font-semibold text-gray-500">名前</th>
+                        <th className="px-4 py-2.5 text-left font-semibold text-gray-500">所属チーム</th>
+                        <th className="px-4 py-2.5 text-left font-semibold text-gray-500">初回</th>
+                        <th className="px-4 py-2.5 text-left font-semibold text-gray-500">最終</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {participants.map((p, i) => (
+                        <tr key={p.user_name} className={i % 2 === 0 ? '' : 'bg-gray-50/50'}>
+                          <td className="px-4 py-2.5 font-medium text-gray-800">{p.user_name}</td>
+                          <td className="px-4 py-2.5">
+                            <div className="flex flex-wrap gap-1">
+                              {(p.teams ?? []).length > 0 ? (p.teams ?? []).map((t) => (
+                                <span key={t} className={`px-1.5 py-0.5 rounded-full font-medium ${TEAM_COLORS[t] ?? 'bg-gray-100 text-gray-600'}`}>
+                                  {t}
+                                </span>
+                              )) : <span className="text-gray-400">未設定</span>}
+                            </div>
+                          </td>
+                          <td className="px-4 py-2.5 text-gray-500 whitespace-nowrap">
+                            {new Date(p.first_login_at).toLocaleString('ja-JP', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                          </td>
+                          <td className="px-4 py-2.5 text-gray-500 whitespace-nowrap">
+                            {new Date(p.last_login_at).toLocaleString('ja-JP', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            )}
           </>
         )}
       </main>
