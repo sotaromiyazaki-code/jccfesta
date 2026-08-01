@@ -17,3 +17,8 @@ body {
 input, textarea, select {
   font-size: 16px;
 }
+
+/* ナビタブバーのスクロールバー非表示 */
+.tab-bar::-webkit-scrollbar {
+  display: none;
+}

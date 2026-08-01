@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JCC使い方ガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cork-1:#d8a95f;
+    --cork-2:#c9944a;
+    --ink:#3a2e22;
+    --paper:#fbf6ec;
+    --yellow:#ffdf6b;
+    --pink:#ff9bb0;
+    --blue:#7fd0e8;
+    --green:#9fdcae;
+    --purple:#cbb2ea;
+    --tape:#fff6c2;
+    --shadow: 0 10px 18px rgba(58,46,34,0.28);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Zen Maru Gothic', sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 20% 10%, rgba(255,255,255,0.10), transparent 40%),
+      radial-gradient(circle at 80% 30%, rgba(0,0,0,0.06), transparent 45%),
+      radial-gradient(circle at 40% 80%, rgba(0,0,0,0.05), transparent 40%),
+      repeating-radial-gradient(circle at 10% 20%, rgba(0,0,0,0.03) 0 2px, transparent 2px 6px),
+      linear-gradient(135deg, var(--cork-1), var(--cork-2));
+    padding: 28px 16px 80px;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+
+  /* ---- Header ---- */
+  header{
+    text-align:center;
+    margin-bottom:34px;
+    position:relative;
+  }
+  .pin{
+    width:16px;height:16px;border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, #ff6b6b, #c62828);
+    box-shadow:0 3px 4px rgba(0,0,0,0.35);
+    position:absolute;
+    left:50%;
+    top:-8px;
+    transform:translateX(-50%);
+    z-index:5;
+  }
+  .board-title{
+    display:inline-block;
+    background:var(--paper);
+    padding:22px 30px 18px;
+    border-radius:6px;
+    box-shadow:var(--shadow);
+    transform:rotate(-1.2deg);
+    position:relative;
+  }
+  .board-title h1{
+    font-family:'Yomogi', cursive;
+    font-size:2.5rem;
+    margin:0 0 6px;
+    color:#c0392b;
+    letter-spacing:1px;
+  }
+  .board-title p{
+    margin:0;
+    font-weight:700;
+    font-size:0.95rem;
+    color:#6b5843;
+  }
+
+  /* ---- Section card (sticky note) ---- */
+  .note{
+    background:var(--paper);
+    border-radius:8px;
+    padding:24px 22px 22px;
+    box-shadow:var(--shadow);
+    margin-bottom:30px;
+    position:relative;
+  }
+  .note.rot-l{transform:rotate(-0.8deg);}
+  .note.rot-r{transform:rotate(0.9deg);}
+
+  .washi{
+    position:absolute;
+    top:-14px;
+    height:30px;
+    width:90px;
+    opacity:0.9;
+    border-radius:2px;
+  }
+  .washi.left{left:22px;transform:rotate(-6deg);}
+  .washi.right{right:26px;transform:rotate(5deg);}
+
+  .tag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:'Yomogi', cursive;
+    font-size:1.5rem;
+    font-weight:400;
+    padding:2px 14px 4px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  .tag.yellow{background:var(--yellow);}
+  .tag.pink{background:var(--pink);}
+  .tag.blue{background:var(--blue);}
+  .tag.green{background:var(--green);}
+  .tag.purple{background:var(--purple);}
+
+  .note h2{
+    font-family:'Zen Maru Gothic', sans-serif;
+    font-weight:900;
+    font-size:1.3rem;
+    margin:0 0 12px;
+    color:var(--ink);
+  }
+  .note p.lead{
+    margin:0 0 16px;
+    font-size:0.95rem;
+    line-height:1.7;
+    color:#4a3c2c;
+  }
+
+  .steps{
+    list-style:none;
+    margin:0 0 18px;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .steps li{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:0.92rem;
+    line-height:1.6;
+  }
+  .steps li .num{
+    flex:none;
+    width:26px;height:26px;
+    border-radius:50%;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Zen Maru Gothic';
+    font-weight:700;
+    font-size:0.8rem;
+    display:flex;align-items:center;justify-content:center;
+    margin-top:1px;
+  }
+
+  .highlight{
+    background:linear-gradient(90deg, transparent, rgba(255,223,107,0.55), rgba(255,223,107,0.55), transparent);
+    padding:2px 4px;
+    border-radius:3px;
+  }
+
+  .kodawari{
+    border:2.5px dashed #c0392b;
+    border-radius:10px;
+    padding:12px 14px;
+    margin-top:6px;
+    background:rgba(255,255,255,0.55);
+  }
+  .kodawari .kt{
+    font-family:'Yomogi', cursive;
+    color:#c0392b;
+    font-size:1.05rem;
+    font-weight:700;
+    display:block;
+    margin-bottom:4px;
+  }
+  .kodawari p{
+    margin:0;
+    font-size:0.88rem;
+    line-height:1.6;
+    color:#4a3c2c;
+  }
+
+  .team-chip{
+    display:inline-block;
+    font-size:0.78rem;
+    font-weight:700;
+    padding:3px 10px;
+    border-radius:999px;
+    margin:2px 4px 2px 0;
+  }
+  .c1{background:#d0e8ff;} .c2{background:#ffe0d0;} .c3{background:#e0ffe4;}
+  .c4{background:#ffe8f0;} .c5{background:#f0e0ff;} .c6{background:#fff3d0;}
+  .c7{background:#d0fff0;} .c8{background:#f0d0d0;}
+
+  footer{
+    text-align:center;
+    margin-top:50px;
+  }
+  footer .board-title{transform:rotate(0.7deg);}
+  footer h3{
+    font-family:'Yomogi', cursive;
+    font-size:1.4rem;
+    margin:0;
+    color:#c0392b;
+  }
+  footer p{
+    margin:6px 0 0;
+    font-size:0.85rem;
+    color:#6b5843;
+  }
+
+  @media (max-width:480px){
+    .board-title h1{font-size:2rem;}
+    .note{padding:20px 16px 18px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="pin"></div>
+    <div class="board-title">
+      <h1>📌 JCC使い方ガイド</h1>
+      <p>これ1枚で、掲示板の使い方が全部わかる！</p>
+    </div>
+  </header>
+
+  <!-- ログイン -->
+  <section class="note rot-l">
+    <div class="washi left" style="background:var(--tape);"></div>
+    <span class="tag yellow">🔑 はじめに</span>
+    <h2>ログインは最初の1回だけ</h2>
+    <p class="lead">名前・合言葉・所属チームを入れたら、あとはスマホが覚えてくれる。毎回入力しなくてOK。</p>
+    <ul class="steps">
+      <li><span class="num">1</span>合言葉を入力（総務から聞いてね）</li>
+      <li><span class="num">2</span>名前を入力</li>
+      <li><span class="num">3</span>自分の所属チームを選ぶ（複数所属もOK）</li>
+    </ul>
+    <div class="kodawari">
+      <span class="kt">こだわりポイント</span>
+      <p>所属チームを最初に登録しておくことで、あとで出てくる「マイページ」に自分宛の依頼・会議だけが自動で集まるようになってるよ。</p>
+    </div>
+  </section>
+
+  <!-- 依頼掲示板 -->
+  <section class="note rot-r">
+    <div class="washi right" style="background:var(--pink); opacity:0.7;"></div>
+    <span class="tag pink">📋 依頼掲示板</span>
+    <h2>「誰が誰に何を頼んだか」がもう迷子にならない</h2>
+    <p class="lead">LINEで流れて消えていた依頼を、ここに集約。<span class="highlight">緊急度が高い順→期限が近い順</span>で並ぶから、優先順位が一目でわかる。</p>
+    <ul class="steps">
+      <li><span class="num">1</span>「＋新しい依頼」でタイトル・内容・期限・優先度を入力</li>
+      <li><span class="num">2</span>送信先をチームまたは個人名で指定（複数選択OK）</li>
+      <li><span class="num">3</span>絵文字リアクションやコメントでやりとり</li>
+      <li><span class="num">4</span>終わったら誰でも「完了にする」を押せる</li>
+    </ul>
+    <p class="lead" style="margin-bottom:8px;">送信先チームはこの8つ＋個人指定：</p>
+    <div style="margin-bottom:16px;">
+      <span class="team-chip c1">全体</span><span class="team-chip c2">総務</span><span class="team-chip c3">制作</span><span class="team-chip c4">司会</span><span class="team-chip c5">コンテンツ1</span><span class="team-chip c6">コンテンツ2</span><span class="team-chip c7">コンテンツ3</span><span class="team-chip c8">インターン</span>
+    </div>
+    <div class="kodawari">
+      <span class="kt">こだわりポイント</span>
+      <p>間違って作った依頼は編集・削除もできる。押し間違いを気にせず気軽に投稿してOK！</p>
+    </div>
+  </section>
+
+  <!-- 日程調整 -->
+  <section class="note rot-l">
+    <div class="washi left" style="background:var(--blue); opacity:0.7;"></div>
+    <span class="tag blue">🗓️ 日程調整</span>
+    <h2>依頼の中で、そのまま日程調整もできる</h2>
+    <p class="lead">依頼作成時に「日程調整を追加」をONにすると、カレンダーから候補日を複数タップで選べる。時間帯を入れるかどうかは日付ごとに自由。</p>
+    <ul class="steps">
+      <li><span class="num">1</span>カレンダーで候補日を複数選択</li>
+      <li><span class="num">2</span>依頼を見た人が〇（参加可能）／△（場合によっては）／×（不可）で回答</li>
+      <li><span class="num">3</span>候補日をタップすると、誰が何と答えたか名前付きで見れる</li>
+    </ul>
+    <div class="kodawari">
+      <span class="kt">こだわりポイント</span>
+      <p>普段は集計数だけのすっきり表示。「誰が×だったの？」が気になったときだけタップして深掘りできる設計。</p>
+    </div>
+  </section>
+
+  <!-- ミーティング管理 -->
+  <section class="note rot-r">
+    <div class="washi right" style="background:var(--green); opacity:0.7;"></div>
+    <span class="tag green">📅 ミーティング管理</span>
+    <h2>会議のURLも議事録も、迷子にならない</h2>
+    <p class="lead">週表示・月表示のカレンダーに、全チームの会議がチームごとの色でまとまって並ぶ。</p>
+    <ul class="steps">
+      <li><span class="num">1</span>タイトル・日時・チーム・会議URL・議事録リンクを入力して登録</li>
+      <li><span class="num">2</span>毎週の定例会は「繰り返し設定」で一括登録</li>
+      <li><span class="num">3</span>終了時刻は未入力でもOK（任意項目）</li>
+    </ul>
+    <div class="kodawari">
+      <span class="kt">こだわりポイント：SOS機能🆘</span>
+      <p>そうたろう・すばる・りゅうせい・ななのうち誰かが必須の会議には「SOSフラグ」をON。まだ誰も参加表明していないとカレンダー上で目立って光るから、見逃し防止になってるよ。詳細画面の「参加する」ボタンで誰でも立候補できる。</p>
+    </div>
+  </section>
+
+  <!-- thanksページ -->
+  <section class="note rot-l">
+    <div class="washi left" style="background:var(--yellow); opacity:0.8;"></div>
+    <span class="tag yellow">✨ thanksページ</span>
+    <h2>ちょっとの頑張りも、ちゃんと届く場所</h2>
+    <p class="lead">「ありがとう」を言いたくなったら、いつでも自由に送れるページ。個人宛でもチーム宛でもOK。</p>
+    <ul class="steps">
+      <li><span class="num">1</span>「＋Thanksを送る」を押す</li>
+      <li><span class="num">2</span>宛先（個人 or チーム）とメッセージを入力</li>
+      <li><span class="num">3</span>送られたthanksには絵文字リアクションやコメントも可能</li>
+    </ul>
+    <div class="kodawari">
+      <span class="kt">こだわりポイント</span>
+      <p>新しい順にフィードで流れるから、開くたびに誰かの頑張りが目に入る。誰がリアクションしたかはタップ／ホバーで見れる控えめ設計。</p>
+    </div>
+  </section>
+
+  <!-- マイページ -->
+  <section class="note rot-r">
+    <div class="washi right" style="background:var(--purple); opacity:0.7;"></div>
+    <span class="tag purple">🔔 マイページ</span>
+    <h2>自分に関係あるものだけ、ここに集まる</h2>
+    <p class="lead">所属チーム宛・全体宛・自分の名前宛の依頼と会議だけが、自動で一覧になる。「掲示板全部を毎回チェックする」から卒業。</p>
+    <ul class="steps">
+      <li><span class="num">1</span>依頼：完了になったら自動でリストから消える</li>
+      <li><span class="num">2</span>依頼にだけある✓ボタンで「自分は確認済み」にできる（他の人には影響しない個人用チェック）</li>
+      <li><span class="num">3</span>会議：終了時刻が過ぎたら自動でリストから消える</li>
+    </ul>
+    <div class="kodawari">
+      <span class="kt">こだわりポイント</span>
+      <p>依頼掲示板の「完了」＝全員に対しての完了、マイページの✓＝自分だけの確認チェック。2つの「完了」の意味をきっちり分けてるよ。</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="board-title">
+      <h3>📌 わからないことがあったら</h3>
+      <p>そうたろうに気軽に聞いてね！随時アップデートしていきます。</p>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

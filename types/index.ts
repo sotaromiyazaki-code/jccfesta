@@ -57,6 +57,33 @@ export interface ScheduleResponse {
   updated_at: string
 }
 
+// ---- 質問箱 ----
+
+export interface Question {
+  id: string
+  content: string
+  from_name: string
+  from_team: string
+  status: 'unanswered' | 'answered'
+  created_at: string
+  question_recipients?: QuestionRecipient[]
+}
+
+export interface QuestionRecipient {
+  id: string
+  question_id: string
+  recipient_type: 'team' | 'individual'
+  recipient_name: string
+}
+
+export interface QuestionComment {
+  id: string
+  question_id: string
+  content: string
+  created_by: string
+  created_at: string
+}
+
 // ---- Thanks ----
 
 export interface Thanks {

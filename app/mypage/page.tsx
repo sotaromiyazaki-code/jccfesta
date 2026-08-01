@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabase'
 import { TEAMS, TEAM_COLORS } from '@/lib/constants'
-import { Request, Meeting } from '@/types'
+import { Request, Meeting, Question } from '@/types'
 import Nav from '@/components/Nav'
 
 const SELECTABLE_TEAMS = TEAMS.filter((t) => t !== '全体')
@@ -19,6 +19,7 @@ export default function MyPage() {
 
   const [requests, setRequests] = useState<Request[]>([])
   const [meetings, setMeetings] = useState<Meeting[]>([])
+  const [questions, setQuestions] = useState<Question[]>([])
   const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set())
   const [loading, setLoading] = useState(true)
 
@@ -42,7 +43,7 @@ export default function MyPage() {
     const now = new Date()
     const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString()
 
-    const [reqRes, mtgRes, dismissRes] = await Promise.all([
+    const [reqRes, mtgRes, qRes, dismissRes] = await Promise.all([
       supabase
         .from('requests')
         .select('*, request_recipients(*)')
@@ -53,6 +54,11 @@ export default function MyPage() {
         .select('*, meeting_recipients(*)')
         .gte('start_at', weekAgo)
         .order('start_at'),
+      supabase
+        .from('questions')
+        .select('*, question_recipients(*)')
+        .eq('status', 'unanswered')
+        .order('created_at', { ascending: false }),
       supabase
         .from('my_page_dismissals')
         .select('item_id')
@@ -84,6 +90,16 @@ export default function MyPage() {
             isMyRecipient(rec.recipient_name)
           )
         })
+      )
+    }
+
+    if (qRes.data) {
+      setQuestions(
+        qRes.data.filter((q) =>
+          q.question_recipients?.some((rec: { recipient_name: string }) =>
+            isMyRecipient(rec.recipient_name)
+          )
+        )
       )
     }
 
@@ -307,7 +323,7 @@ export default function MyPage() {
             </section>
 
             {/* 自分宛のミーティング */}
-            <section>
+            <section className="mb-6">
               <p className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
                 📅 自分宛の会議
                 {meetings.length > 0 && (
@@ -352,6 +368,53 @@ export default function MyPage() {
                                 : 'bg-indigo-100 text-indigo-700'
                             }`}
                           >
+                            {r.recipient_name}
+                          </span>
+                        ))}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </section>
+
+            {/* 自分宛の質問 */}
+            <section>
+              <p className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
+                ❓ 自分宛の質問
+                {questions.length > 0 && (
+                  <span className="ml-2 bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full normal-case">
+                    {questions.length}件
+                  </span>
+                )}
+              </p>
+
+              {questions.length === 0 ? (
+                <p className="text-sm text-gray-400 text-center py-6 bg-white rounded-2xl border border-gray-100">
+                  未回答の質問はありません
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  {questions.map((q) => (
+                    <Link
+                      key={q.id}
+                      href={`/questions/${q.id}`}
+                      className="block bg-white rounded-2xl border border-gray-200 px-4 py-3 hover:border-purple-300 hover:shadow-sm transition-all"
+                    >
+                      <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                        <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded-full shrink-0">
+                          未回答
+                        </span>
+                        <span className="text-xs text-gray-500">{q.from_team}チーム・{q.from_name}</span>
+                      </div>
+                      <p className="text-sm text-gray-800 leading-snug line-clamp-2">{q.content}</p>
+                      <div className="flex flex-wrap gap-1 mt-1.5">
+                        {q.question_recipients?.map((r) => (
+                          <span key={r.id} className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                            r.recipient_type === 'team'
+                              ? (TEAM_COLORS[r.recipient_name] ?? 'bg-gray-100 text-gray-700')
+                              : 'bg-indigo-100 text-indigo-700'
+                          }`}>
                             {r.recipient_name}
                           </span>
                         ))}
